@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import { db } from "./firebase/firebase";
 import { makeStyles } from "@material-ui/core/styles";
+import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Create = () => {
+const Create = (props: any) => {
   const [sentence, setSentence] = useState("");
   const [choiceA, setChoiceA] = useState("");
   const [choiceB, setChoiceB] = useState("");
@@ -163,6 +164,18 @@ const Create = () => {
       >
         投稿する
         <AddToPhotosIcon />
+      </Button>
+
+      <br />
+      <br />
+      <Button
+        variant="contained"
+        onClick={() => props.history.push("/")}
+        color="default"
+        size="large"
+      >
+        ホームに戻る
+        <HomeIcon />
       </Button>
     </div>
   );

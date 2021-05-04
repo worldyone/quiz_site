@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase/firebase";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -216,7 +217,7 @@ const Solve = (props: any) => {
         size="large"
       >
         ホームに戻る
-        <AddToPhotosIcon />
+        <HomeIcon />
       </Button>
     </div>
   );

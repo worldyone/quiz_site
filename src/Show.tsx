@@ -1,6 +1,7 @@
-import { Card, List, makeStyles } from "@material-ui/core";
+import { Button, Card, List, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase/firebase";
+import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles({
   list: {
@@ -55,6 +56,18 @@ const Show: React.FC = (props: any) => {
           </Card>
         ))}
       </List>
+
+      <br />
+      <br />
+      <Button
+        variant="contained"
+        onClick={() => props.history.push("/")}
+        color="default"
+        size="large"
+      >
+        ホームに戻る
+        <HomeIcon />
+      </Button>
     </div>
   );
 };
