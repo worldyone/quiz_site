@@ -16,7 +16,7 @@ ReactDOM.render(
         <Route exact path="/" component={App} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/create" component={Create} />
-        <Route exact path="/solve" component={Solve} />
+        <Route exact path="/solve/:id" component={Solve} />
         <Route exact path="/show" component={Show} />
       </>
     </BrowserRouter>
