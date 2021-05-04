@@ -1,16 +1,7 @@
-import {
-  Card,
-  FormControl,
-  Grid,
-  List,
-  makeStyles,
-  TextField,
-} from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core";
+import React, { useEffect } from "react";
 import styles from "./styles/App.module.css";
-import { auth, db } from "./firebase/firebase";
-import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
-import TaskItem from "./TaskItem";
+import { auth } from "./firebase/firebase";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";

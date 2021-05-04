@@ -1,9 +1,7 @@
 import { Button, FormControl, MenuItem, TextField } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
-import { auth, db } from "./firebase/firebase";
-import styles from "./styles/Create.module.css";
-import Icon from "@material-ui/core/Icon";
+import { db } from "./firebase/firebase";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
