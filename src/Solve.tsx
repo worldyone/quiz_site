@@ -1,4 +1,4 @@
-import { Button, FormControl, MenuItem, TextField } from "@material-ui/core";
+import { Button, MenuItem, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase/firebase";
@@ -12,10 +12,6 @@ const useStyles = makeStyles((theme) => ({
   list: {
     margin: "auto",
     width: "40%",
-  },
-  sentence: {
-    // width: "1200",
-    // height: "1000",
   },
   button: {
     margin: theme.spacing(1),
@@ -35,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Solve = () => {
+const Solve = (props: any) => {
   const path = window.location.pathname;
-  const id = path.split("/solve/")[1];
+  const quiz_id = path.split("/solve/")[1];
 
   const [quiz, setQuiz] = useState({
     id: "",
@@ -51,14 +47,46 @@ const Solve = () => {
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    db.collection("quizzes")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        const data: any = doc.data();
-        setQuiz(data);
-      });
-  }, [quiz]);
+    if (quiz_id === undefined || quiz_id === "") {
+      // ランダムで問題を取得する
+      const quizzesList: {
+        id: string;
+        sentence: string;
+        choiceA: string;
+        choiceB: string;
+        choiceC: string;
+        choiceD: string;
+        answer: string;
+      }[] = [];
+      db.collection("quizzes")
+        .get()
+        .then((snapshots) => {
+          snapshots.forEach((snapshot) => {
+            const quizzes: any = snapshot.data();
+            quizzesList.push({
+              id: snapshot.id,
+              sentence: quizzes.sentence,
+              choiceA: quizzes.choiceA,
+              choiceB: quizzes.choiceB,
+              choiceC: quizzes.choiceC,
+              choiceD: quizzes.choiceD,
+              answer: quizzes.answer,
+            });
+          });
+          const randomIndex = Math.floor(Math.random() * quizzesList.length);
+          setQuiz(quizzesList[randomIndex]);
+        });
+    } else {
+      // 指定のIDの問題を取得する
+      db.collection("quizzes")
+        .doc(quiz_id)
+        .get()
+        .then((doc) => {
+          const data: any = doc.data();
+          setQuiz(data);
+        });
+    }
+  }, []);
 
   const answers = [
     {
@@ -81,7 +109,7 @@ const Solve = () => {
 
   const classes = useStyles();
 
-  const submitAnswer = (answer: any) => {
+  const submitAnswer = (answer: string) => {
     if (answer === quiz.answer) {
       alert("正解です！");
     } else {
@@ -94,7 +122,6 @@ const Solve = () => {
       <h1>問題解答ページ</h1>
       <br />
       <TextField
-        className={classes.sentence}
         fullWidth
         InputProps={{
           classes: {
@@ -160,11 +187,35 @@ const Solve = () => {
       <br />
       <Button
         variant="contained"
-        onClick={submitAnswer}
+        onClick={() => submitAnswer(answer)}
         color="primary"
         size="large"
       >
         解答する
+        <AddToPhotosIcon />
+      </Button>
+
+      <br />
+      <br />
+      <Button
+        variant="contained"
+        onClick={() => document.location.reload()}
+        color="secondary"
+        size="large"
+      >
+        ランダムな問題を解く
+        <AddToPhotosIcon />
+      </Button>
+
+      <br />
+      <br />
+      <Button
+        variant="contained"
+        onClick={() => props.history.push("/")}
+        color="default"
+        size="large"
+      >
+        ホームに戻る
         <AddToPhotosIcon />
       </Button>
     </div>
