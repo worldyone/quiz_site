@@ -1,7 +1,7 @@
 import { Button, FormControl, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
-import { auth } from './firebase';
-import styles from "./Login.module.css";
+import { auth } from './firebase/firebase';
+import styles from "./styles/Login.module.css";
 
 const Login: React.FC = (props: any) => {
     const [isLogin, setIsLogin] = useState(true);

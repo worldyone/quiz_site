@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from "./TaskItem.module.css";
+import styles from "./styles/TaskItem.module.css";
 import { Grid, ListItem, TextField } from '@material-ui/core';
 import { useState } from 'react';
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import { db } from './firebase';
+import { db } from './firebase/firebase';
 
 interface PROPS {
     id: string;
