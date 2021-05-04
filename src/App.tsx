@@ -1,26 +1,114 @@
-import { FormControl, List, makeStyles, TextField } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import styles from './styles/App.module.css';
-import { auth, db } from './firebase/firebase';
+import {
+  Card,
+  FormControl,
+  Grid,
+  List,
+  makeStyles,
+  TextField,
+} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import styles from "./styles/App.module.css";
+import { auth, db } from "./firebase/firebase";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
-import TaskItem from './TaskItem';
+import TaskItem from "./TaskItem";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles({
-  field: {
-    marginTop: 30,
-    marginBottom: 20,
+const menus = [
+  {
+    key: "create",
+    title: "作る",
+    width: "30%",
   },
-  list: {
-    margin: "auto",
-    width: "40%",
-  }
-})
+  {
+    key: "solve",
+    title: "解く",
+    width: "30%",
+  },
+  {
+    key: "show",
+    title: "見る",
+    width: "30%",
+  },
+];
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    minWidth: 300,
+    width: "100%",
+  },
+  image: {
+    position: "relative",
+    height: 200,
+    [theme.breakpoints.down("xs")]: {
+      width: "100% !important", // Overrides inline-style
+      height: 100,
+    },
+    "&:hover, &$focusVisible": {
+      zIndex: 1,
+      "& $imageBackdrop": {
+        opacity: 0.15,
+      },
+      "& $imageMarked": {
+        opacity: 0,
+      },
+      "& $imageTitle": {
+        border: "4px solid currentColor",
+      },
+    },
+  },
+  focusVisible: {},
+  imageButton: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.palette.common.white,
+  },
+  imageSrc: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: "cover",
+    backgroundPosition: "center 40%",
+  },
+  imageBackdrop: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create("opacity"),
+  },
+  imageTitle: {
+    position: "relative",
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${
+      theme.spacing(1) + 6
+    }px`,
+  },
+  imageMarked: {
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: "absolute",
+    bottom: -2,
+    left: "calc(50% - 9px)",
+    transition: theme.transitions.create("opacity"),
+  },
+}));
 
 const App: React.FC = (props: any) => {
-  const [tasks, setTasks] = useState([{id:"", title:""}]);
-  const [input, setInput] = useState("");
-
   const classes = useStyles();
 
   useEffect(() => {
@@ -28,60 +116,60 @@ const App: React.FC = (props: any) => {
       !user && props.history.push("login");
     });
     return () => unSub();
-  })
+  });
 
-  useEffect(() => {
-    const unSub = db.collection("tasks").onSnapshot((snapshot) => {
-      setTasks(
-        snapshot.docs.map((doc) => ({id: doc.id, title: doc.data().title}))
-      );
-    });
-    return () => unSub();
-  }, []);
-
-  const newTask = (e: any) => {
-    db.collection("tasks").add({title: input});
-    setInput("");
-  }
-
-  return <div className={styles.app__root}>
-    <h1>Todo App by React/Firebase</h1>
-    <button className={styles.app__logout}
-      onClick={
-        async () => {
+  return (
+    <div className={styles.app__root}>
+      <h1>QUIZ SITE</h1>
+      <button
+        className={styles.app__logout}
+        onClick={async () => {
           try {
             await auth.signOut();
             props.history.push("login");
           } catch (error) {
             alert(error.message);
           }
-        }
-      }
-    >
-      <ExitToAppIcon />
-    </button>
-    <br></br>
-    <FormControl>
-      <TextField
-        className={classes.field}
-        InputLabelProps={{
-          shrink: true,
         }}
-        label="New task ?"
-        value={input}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-      />
-    </FormControl>
-    <button className={styles.app__icon} disabled={!input} onClick={newTask}>
-      <AddToPhotosIcon />
-    </button>
+      >
+        <ExitToAppIcon />
+      </button>
+      <br></br>
 
-    <List className={classes.list}>
-      {tasks.map((task) => (
-       <TaskItem id={task.id} title={task.title} />
+      {menus.map((menu) => (
+        <ButtonBase
+          focusRipple
+          key={menu.title}
+          className={classes.image}
+          focusVisibleClassName={classes.focusVisible}
+          style={{
+            width: menu.width,
+          }}
+          onClick={async () => {
+            try {
+              props.history.push("/" + menu.key);
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
+        >
+          <span className={classes.imageSrc} />
+          <span className={classes.imageBackdrop} />
+          <span className={classes.imageButton}>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              className={classes.imageTitle}
+            >
+              <h1>{menu.title}</h1>
+              <span className={classes.imageMarked} />
+            </Typography>
+          </span>
+        </ButtonBase>
       ))}
-    </List>
-  </div>
-}
+    </div>
+  );
+};
 
 export default App;
