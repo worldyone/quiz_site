@@ -1,16 +1,10 @@
-import {
-  Button,
-  ButtonBase,
-  Card,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, MenuItem, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase/firebase";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import HomeIcon from "@material-ui/icons/Home";
+import DoneOutlinedIcon from "@material-ui/icons/DoneOutlined";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -28,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     width: "100px",
     height: "80px",
+    fontSize: "32",
   },
   choice: {
     margin: theme.spacing(1),
@@ -144,7 +139,10 @@ const Solve = (props: any) => {
             input: classes.resize,
           },
         }}
-        // label="問題文を入力してください。"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        label="問題文"
         size="medium"
         margin="dense"
         value={quiz.sentence}
@@ -216,7 +214,7 @@ const Solve = (props: any) => {
         size="large"
       >
         解答する
-        <AddToPhotosIcon />
+        <DoneOutlinedIcon />
       </Button>
 
       <br />
