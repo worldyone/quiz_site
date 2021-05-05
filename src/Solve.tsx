@@ -1,4 +1,11 @@
-import { Button, MenuItem, TextField } from "@material-ui/core";
+import {
+  Button,
+  ButtonBase,
+  Card,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase/firebase";
@@ -25,10 +32,18 @@ const useStyles = makeStyles((theme) => ({
   choice: {
     margin: theme.spacing(1),
     width: "15%",
+    display: "initial",
   },
   resize: {
     fontSize: 32,
     lineHeight: "normal",
+  },
+  label: {
+    display: "initial",
+  },
+  block: {
+    display: "block",
+    textAlign: "right",
   },
 }));
 
@@ -143,7 +158,9 @@ const Solve = (props: any) => {
         color="primary"
         variant="outlined"
         onClick={() => setAnswer("A")}
+        onDoubleClick={() => submitAnswer(answer)}
       >
+        <span className={classes.block}>選択肢A</span>
         <h1>{quiz.choiceA}</h1>
       </Button>
       <Button
@@ -151,7 +168,9 @@ const Solve = (props: any) => {
         color="primary"
         variant="outlined"
         onClick={() => setAnswer("B")}
+        onDoubleClick={() => submitAnswer(answer)}
       >
+        <span className={classes.block}>選択肢B</span>
         <h1>{quiz.choiceB}</h1>
       </Button>
       <Button
@@ -159,7 +178,9 @@ const Solve = (props: any) => {
         color="primary"
         variant="outlined"
         onClick={() => setAnswer("C")}
+        onDoubleClick={() => submitAnswer(answer)}
       >
+        <span className={classes.block}>選択肢C</span>
         <h1>{quiz.choiceC}</h1>
       </Button>
       <Button
@@ -167,7 +188,9 @@ const Solve = (props: any) => {
         color="primary"
         variant="outlined"
         onClick={() => setAnswer("D")}
+        onDoubleClick={() => submitAnswer(answer)}
       >
+        <span className={classes.block}>選択肢D</span>
         <h1>{quiz.choiceD}</h1>
       </Button>
       <br />
